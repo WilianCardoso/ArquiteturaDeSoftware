@@ -2,6 +2,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import model.User;
 
@@ -36,12 +37,18 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void saveUser(User user) {
-        String sql = "INSERT INTO usuario (nome,) VALUES (?, ?)";
+        String sql = "INSERT INTO usuario (nome) VALUES (?)";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, user.getName());
-            ps.executeUpdate();
-        } catch (Exception e) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, user.getName());
+
+            int rowsInserted = stmt.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Usuário salvo com sucesso!");
+            } else {
+                System.out.println("Erro ao salvar o usuário.");
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
