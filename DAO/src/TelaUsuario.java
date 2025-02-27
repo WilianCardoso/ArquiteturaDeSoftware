@@ -1,20 +1,26 @@
-package view;
+
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import dao.UserDaoImpl;
 import model.User;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class TelaUsuario extends JFrame {
 
     private JTextField txtId;
-    private JTextField txtNome;
+    private JTextField txtName;
     private JButton btnBuscar;
     private JButton btnSalvar;
     private JButton btnExcluir;
+    private JButton btnUpdate;
     private UserDaoImpl userDao;
 
     public TelaUsuario() {
@@ -29,21 +35,23 @@ public class TelaUsuario extends JFrame {
         JLabel lblId = new JLabel("ID:");
         txtId = new JTextField();
         JLabel lblNome = new JLabel("Nome:");
-        txtNome = new JTextField();
+        txtName = new JTextField();
 
         btnBuscar = new JButton("Buscar");
         btnSalvar = new JButton("Salvar");
         btnExcluir = new JButton("Excluir");
+        btnUpdate = new JButton("Atualizar");
 
         // Adicionando os componentes ao JFrame
         add(lblId);
         add(txtId);
         add(lblNome);
-        add(txtNome);
+        add(txtName);
 
         add(btnBuscar);
         add(btnSalvar);
         add(btnExcluir);
+        add(btnUpdate);
 
         // Ações dos botões
         btnBuscar.addActionListener(new ActionListener() {
@@ -67,6 +75,13 @@ public class TelaUsuario extends JFrame {
             }
         });
 
+        btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateUser();
+            }
+        });
+
         setLocationRelativeTo(null); // Centraliza a janela
     }
 
@@ -76,7 +91,7 @@ public class TelaUsuario extends JFrame {
         User user = userDao.findUserByUserId(id);
 
         if (user != null) {
-            txtNome.setText(user.getName());
+            txtName.setText(user.getName());
         } else {
             JOptionPane.showMessageDialog(this, "Usuário não encontrado!");
         }
@@ -84,7 +99,7 @@ public class TelaUsuario extends JFrame {
 
     // Método para salvar um novo usuário
     private void salvarUsuario() {
-        String nome = txtNome.getText();
+        String nome = txtName.getText();
 
         User user = new User();
         user.setName(nome);
@@ -100,6 +115,19 @@ public class TelaUsuario extends JFrame {
         JOptionPane.showMessageDialog(this, "Usuário excluído com sucesso!");
 
         txtId.setText("");
-        txtNome.setText("");
+        txtName.setText("");
+    }
+
+    // Atualizar o usuário
+    private void updateUser() {
+        int id = Integer.parseInt(txtId.getText());
+        String name = txtName.getText();
+
+        userDao.updateUser(id, name);
+
+        User user = userDao.findUserByUserId(id);
+        txtName.setText(user.getName());
+
+        JOptionPane.showMessageDialog(this, "Usuário alterado com sucesso!");
     }
 }

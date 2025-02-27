@@ -15,7 +15,7 @@ public class Conexao {
         // Informações do banco de dados
         String url = "jdbc:mysql://localhost:3306/db_DAO";
         String user = "root";
-        String password = "";
+        String password = "senai";
 
         try {
             // Carrega o driver do MySQL (opcional para Java 8+)

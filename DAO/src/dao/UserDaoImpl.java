@@ -64,4 +64,26 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void updateUser(int id, String name) {
+        String sql = "UPDATE usuario SET nome = ? WHERE id = ?";
+    
+        try (Connection conn = Conexao.getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
+            stmt.setString(1, name);
+            stmt.setInt(2, id);
+    
+            int linhasAfetadas = stmt.executeUpdate();
+            if (linhasAfetadas == 0) {
+                System.out.println("Nenhum usuário foi atualizado. Verifique se o ID existe.");
+            } else {
+                System.out.println("Usuário atualizado com sucesso!");
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace(); // Exibe o erro exato no console
+        }
+    }
 }

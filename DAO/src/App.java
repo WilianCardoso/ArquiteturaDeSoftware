@@ -1,6 +1,5 @@
-import javax.swing.SwingUtilities;
 
-import view.TelaUsuario;
+import javax.swing.SwingUtilities;
 
 public class App {
     public static void main(String[] args) throws Exception {

@@ -9,4 +9,6 @@ public interface UserDao {
 
     void deletarUser(int id);
 
+    void updateUser(int id, String name);
+
 }
